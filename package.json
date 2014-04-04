@@ -1,23 +1,22 @@
 {
-    "name": "astra",
-    "version": "0.0.1",
-    "files": [
-        "./lib/ast_crush.js",
-        "./lib/astra.js",
-        "./lib/deep_compare.js",
-        "./index.js",
-        "./test/ast_crush.js",
-        "./test/astra.js",
-        "./test/deep_compare.js",
-        "./package.json",
-        "./README.md"
-    ],
-    "dependencies": {
-        "type-of-is": "~3.2.0",
-        "underscore": "~1.6.0"
-    },
-    "devDependencies": {
-        "mocha": "~1.18.2",
-        "should": "~3.2.0"
-    }
+  "name": "astra",
+  "version": "0.0.4",
+  "files": [
+    "lib/ast_crush.js",
+    "lib/astra.js",
+    "lib/deep_compare.js",
+    "index.js",
+    "test/ast_crush.js",
+    "test/astra.js",
+    "test/deep_compare.js"
+  ],
+  "dependencies": {
+    "type-of-is": "~3.2.0",
+    "underscore": "~1.6.0",
+    "async": "~0.6.2"
+  },
+  "devDependencies": {
+    "mocha": "~1.18.2",
+    "should": "~3.2.0"
+  }
 }
