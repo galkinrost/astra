@@ -1109,7 +1109,7 @@ describe('Astra', function () {
 
         JSON.stringify(newAst).should.be.equal(JSON.stringify(result));
     });
-    it.only('Array pattern and async', function (done) {
+    it('Array pattern and async', function (done) {
         var ast = {
             "type": "Program",
             "body": [
@@ -1462,7 +1462,7 @@ describe('Astra', function () {
                     }
                 }
             ]};
-        astra(ast,true)
+        astra(ast, true)
             .when([
                 {
                     "type": "Literal",
@@ -1473,18 +1473,766 @@ describe('Astra', function () {
                     "type": "Literal",
                     "value": "/app/styles/styles.css"
                 }
-            ], function (chunk,next) {
+            ], function (chunk, next) {
                 chunk.value = "";
                 chunk.raw = "\"\"";
                 setTimeout(next, 1000);
 
             })
-            .run(function(err,newAst){
+            .run(function (err, newAst) {
                 JSON.stringify(newAst).should.be.equal(JSON.stringify(result));
                 done();
             });
 
     });
+    it('Complex pattern', function () {
+        var ast = {"type": "Program", "body": [
+            {
+                "type": "ExpressionStatement",
+                "expression": {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                            "type": "Identifier",
+                            "name": "angular"
+                        },
+                        "property": {
+                            "type": "Identifier",
+                            "name": "module"
+                        }
+                    },
+                    "arguments": [
+                        {
+                            "type": "Literal",
+                            "value": "App",
+                            "raw": "\"App\""
+                        },
+                        {
+                            "type": "ArrayExpression",
+                            "elements": [
+                                {
+                                    "type": "Literal",
+                                    "value": "ngRoute",
+                                    "raw": "\"ngRoute\""
+                                }
+                            ]
+                        },
+                        {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [
+                                {
+                                    "type": "Identifier",
+                                    "name": "$routeProvider"
+                                }
+                            ],
+                            "defaults": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "CallExpression",
+                                            "callee": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "type": "CallExpression",
+                                                    "callee": {
+                                                        "type": "MemberExpression",
+                                                        "computed": false,
+                                                        "object": {
+                                                            "type": "Identifier",
+                                                            "name": "$routeProvider"
+                                                        },
+                                                        "property": {
+                                                            "type": "Identifier",
+                                                            "name": "when"
+                                                        }
+                                                    },
+                                                    "arguments": [
+                                                        {
+                                                            "type": "Literal",
+                                                            "value": "/url",
+                                                            "raw": "\"/url\""
+                                                        },
+                                                        {
+                                                            "type": "ObjectExpression",
+                                                            "properties": [
+                                                                {
+                                                                    "type": "Property",
+                                                                    "key": {
+                                                                        "type": "Identifier",
+                                                                        "name": "template"
+                                                                    },
+                                                                    "value": {
+                                                                        "type": "Literal",
+                                                                        "value": "/",
+                                                                        "raw": "'/'"
+                                                                    },
+                                                                    "kind": "init"
+                                                                },
+                                                                {
+                                                                    "type": "Property",
+                                                                    "key": {
+                                                                        "type": "Identifier",
+                                                                        "name": "styles"
+                                                                    },
+                                                                    "value": {
+                                                                        "type": "Literal",
+                                                                        "value": "/",
+                                                                        "raw": "'/'"
+                                                                    },
+                                                                    "kind": "init"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                "property": {
+                                                    "type": "Identifier",
+                                                    "name": "when"
+                                                }
+                                            },
+                                            "arguments": [
+                                                {
+                                                    "type": "Literal",
+                                                    "value": "/url/2",
+                                                    "raw": "\"/url/2\""
+                                                },
+                                                {
+                                                    "type": "ObjectExpression",
+                                                    "properties": [
+                                                        {
+                                                            "type": "Property",
+                                                            "key": {
+                                                                "type": "Identifier",
+                                                                "name": "template"
+                                                            },
+                                                            "value": {
+                                                                "type": "Literal",
+                                                                "value": "/app/templates/views/view2.html",
+                                                                "raw": "'/app/templates/views/view2.html'"
+                                                            },
+                                                            "kind": "init"
+                                                        },
+                                                        {
+                                                            "type": "Property",
+                                                            "key": {
+                                                                "type": "Identifier",
+                                                                "name": "styles"
+                                                            },
+                                                            "value": {
+                                                                "type": "Literal",
+                                                                "value": "/app/styles/views/view2.css",
+                                                                "raw": "'/app/styles/views/view2.css'"
+                                                            },
+                                                            "kind": "init"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "rest": null,
+                            "generator": false,
+                            "expression": false
+                        }
+                    ]
+                }
+            }
+        ]};
 
+        var result= {"type": "Program", "body": [
+            {
+                "type": "ExpressionStatement",
+                "expression": {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                            "type": "Identifier",
+                            "name": "angular"
+                        },
+                        "property": {
+                            "type": "Identifier",
+                            "name": "module"
+                        }
+                    },
+                    "arguments": [
+                        {
+                            "type": "Literal",
+                            "value": "App",
+                            "raw": "\"App\""
+                        },
+                        {
+                            "type": "ArrayExpression",
+                            "elements": [
+                                {
+                                    "type": "Literal",
+                                    "value": "ngRoute",
+                                    "raw": "\"ngRoute\""
+                                }
+                            ]
+                        },
+                        {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [
+                                {
+                                    "type": "Identifier",
+                                    "name": "$routeProvider"
+                                }
+                            ],
+                            "defaults": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "CallExpression",
+                                            "callee": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "type": "CallExpression",
+                                                    "callee": {
+                                                        "type": "MemberExpression",
+                                                        "computed": false,
+                                                        "object": {
+                                                            "type": "Identifier",
+                                                            "name": "$routeProvider"
+                                                        },
+                                                        "property": {
+                                                            "type": "Identifier",
+                                                            "name": "when"
+                                                        }
+                                                    },
+                                                    "arguments": [
+                                                        {
+                                                            "type": "Literal",
+                                                            "value": "/url",
+                                                            "raw": "\"/url\""
+                                                        },
+                                                        {
+                                                            "type": "ObjectExpression",
+                                                            "properties": [
+                                                                {
+                                                                    "type": "Property",
+                                                                    "key": {
+                                                                        "type": "Identifier",
+                                                                        "name": "template"
+                                                                    },
+                                                                    "value": {
+                                                                        "type": "Literal",
+                                                                        "value": "",
+                                                                        "raw": "'/'"
+                                                                    },
+                                                                    "kind": "init"
+                                                                },
+                                                                {
+                                                                    "type": "Property",
+                                                                    "key": {
+                                                                        "type": "Identifier",
+                                                                        "name": "styles"
+                                                                    },
+                                                                    "value": {
+                                                                        "type": "Literal",
+                                                                        "value": "",
+                                                                        "raw": "'/'"
+                                                                    },
+                                                                    "kind": "init"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                "property": {
+                                                    "type": "Identifier",
+                                                    "name": "when"
+                                                }
+                                            },
+                                            "arguments": [
+                                                {
+                                                    "type": "Literal",
+                                                    "value": "/url/2",
+                                                    "raw": "\"/url/2\""
+                                                },
+                                                {
+                                                    "type": "ObjectExpression",
+                                                    "properties": [
+                                                        {
+                                                            "type": "Property",
+                                                            "key": {
+                                                                "type": "Identifier",
+                                                                "name": "template"
+                                                            },
+                                                            "value": {
+                                                                "type": "Literal",
+                                                                "value": "",
+                                                                "raw": "'/app/templates/views/view2.html'"
+                                                            },
+                                                            "kind": "init"
+                                                        },
+                                                        {
+                                                            "type": "Property",
+                                                            "key": {
+                                                                "type": "Identifier",
+                                                                "name": "styles"
+                                                            },
+                                                            "value": {
+                                                                "type": "Literal",
+                                                                "value": "",
+                                                                "raw": "'/app/styles/views/view2.css'"
+                                                            },
+                                                            "kind": "init"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "rest": null,
+                            "generator": false,
+                            "expression": false
+                        }
+                    ]
+                }
+            }
+        ]};
+
+        var newAst=astra(ast)
+            .when({
+                "type": "FunctionExpression",
+                "params": [
+                    {
+                        "type": "Identifier",
+                        "name": "$routeProvider"
+                    }
+                ],
+                "**": {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "property": {
+                            "type": "Identifier",
+                            "name": "when"
+                        }
+                    },
+                    "**": [
+                        {
+                            "type": "Property",
+                            "key": {
+                                "type": "Identifier",
+                                "name": "template"
+                            },
+                            "value": {
+                                "type": "Literal"
+                            }
+                        },
+                        {
+                            "type": "Property",
+                            "key": {
+                                "type": "Identifier",
+                                "name": "styles"
+                            },
+                            "value": {
+                                "type": "Literal"
+                            }
+                        }
+                    ]
+                }
+            }, function (chunk) {
+                chunk.value.value='';
+            })
+            .run();
+
+        JSON.stringify(newAst).should.be.equal(JSON.stringify(result));
+    });
+    it('Complex pattern async', function (done) {
+        var ast = {"type": "Program", "body": [
+            {
+                "type": "ExpressionStatement",
+                "expression": {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                            "type": "Identifier",
+                            "name": "angular"
+                        },
+                        "property": {
+                            "type": "Identifier",
+                            "name": "module"
+                        }
+                    },
+                    "arguments": [
+                        {
+                            "type": "Literal",
+                            "value": "App",
+                            "raw": "\"App\""
+                        },
+                        {
+                            "type": "ArrayExpression",
+                            "elements": [
+                                {
+                                    "type": "Literal",
+                                    "value": "ngRoute",
+                                    "raw": "\"ngRoute\""
+                                }
+                            ]
+                        },
+                        {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [
+                                {
+                                    "type": "Identifier",
+                                    "name": "$routeProvider"
+                                }
+                            ],
+                            "defaults": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "CallExpression",
+                                            "callee": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "type": "CallExpression",
+                                                    "callee": {
+                                                        "type": "MemberExpression",
+                                                        "computed": false,
+                                                        "object": {
+                                                            "type": "Identifier",
+                                                            "name": "$routeProvider"
+                                                        },
+                                                        "property": {
+                                                            "type": "Identifier",
+                                                            "name": "when"
+                                                        }
+                                                    },
+                                                    "arguments": [
+                                                        {
+                                                            "type": "Literal",
+                                                            "value": "/url",
+                                                            "raw": "\"/url\""
+                                                        },
+                                                        {
+                                                            "type": "ObjectExpression",
+                                                            "properties": [
+                                                                {
+                                                                    "type": "Property",
+                                                                    "key": {
+                                                                        "type": "Identifier",
+                                                                        "name": "template"
+                                                                    },
+                                                                    "value": {
+                                                                        "type": "Literal",
+                                                                        "value": "/",
+                                                                        "raw": "'/'"
+                                                                    },
+                                                                    "kind": "init"
+                                                                },
+                                                                {
+                                                                    "type": "Property",
+                                                                    "key": {
+                                                                        "type": "Identifier",
+                                                                        "name": "styles"
+                                                                    },
+                                                                    "value": {
+                                                                        "type": "Literal",
+                                                                        "value": "/",
+                                                                        "raw": "'/'"
+                                                                    },
+                                                                    "kind": "init"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                "property": {
+                                                    "type": "Identifier",
+                                                    "name": "when"
+                                                }
+                                            },
+                                            "arguments": [
+                                                {
+                                                    "type": "Literal",
+                                                    "value": "/url/2",
+                                                    "raw": "\"/url/2\""
+                                                },
+                                                {
+                                                    "type": "ObjectExpression",
+                                                    "properties": [
+                                                        {
+                                                            "type": "Property",
+                                                            "key": {
+                                                                "type": "Identifier",
+                                                                "name": "template"
+                                                            },
+                                                            "value": {
+                                                                "type": "Literal",
+                                                                "value": "/app/templates/views/view2.html",
+                                                                "raw": "'/app/templates/views/view2.html'"
+                                                            },
+                                                            "kind": "init"
+                                                        },
+                                                        {
+                                                            "type": "Property",
+                                                            "key": {
+                                                                "type": "Identifier",
+                                                                "name": "styles"
+                                                            },
+                                                            "value": {
+                                                                "type": "Literal",
+                                                                "value": "/app/styles/views/view2.css",
+                                                                "raw": "'/app/styles/views/view2.css'"
+                                                            },
+                                                            "kind": "init"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "rest": null,
+                            "generator": false,
+                            "expression": false
+                        }
+                    ]
+                }
+            }
+        ]};
+
+        var result= {"type": "Program", "body": [
+            {
+                "type": "ExpressionStatement",
+                "expression": {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                            "type": "Identifier",
+                            "name": "angular"
+                        },
+                        "property": {
+                            "type": "Identifier",
+                            "name": "module"
+                        }
+                    },
+                    "arguments": [
+                        {
+                            "type": "Literal",
+                            "value": "App",
+                            "raw": "\"App\""
+                        },
+                        {
+                            "type": "ArrayExpression",
+                            "elements": [
+                                {
+                                    "type": "Literal",
+                                    "value": "ngRoute",
+                                    "raw": "\"ngRoute\""
+                                }
+                            ]
+                        },
+                        {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [
+                                {
+                                    "type": "Identifier",
+                                    "name": "$routeProvider"
+                                }
+                            ],
+                            "defaults": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "CallExpression",
+                                            "callee": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "type": "CallExpression",
+                                                    "callee": {
+                                                        "type": "MemberExpression",
+                                                        "computed": false,
+                                                        "object": {
+                                                            "type": "Identifier",
+                                                            "name": "$routeProvider"
+                                                        },
+                                                        "property": {
+                                                            "type": "Identifier",
+                                                            "name": "when"
+                                                        }
+                                                    },
+                                                    "arguments": [
+                                                        {
+                                                            "type": "Literal",
+                                                            "value": "/url",
+                                                            "raw": "\"/url\""
+                                                        },
+                                                        {
+                                                            "type": "ObjectExpression",
+                                                            "properties": [
+                                                                {
+                                                                    "type": "Property",
+                                                                    "key": {
+                                                                        "type": "Identifier",
+                                                                        "name": "template"
+                                                                    },
+                                                                    "value": {
+                                                                        "type": "Literal",
+                                                                        "value": "",
+                                                                        "raw": "'/'"
+                                                                    },
+                                                                    "kind": "init"
+                                                                },
+                                                                {
+                                                                    "type": "Property",
+                                                                    "key": {
+                                                                        "type": "Identifier",
+                                                                        "name": "styles"
+                                                                    },
+                                                                    "value": {
+                                                                        "type": "Literal",
+                                                                        "value": "",
+                                                                        "raw": "'/'"
+                                                                    },
+                                                                    "kind": "init"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                "property": {
+                                                    "type": "Identifier",
+                                                    "name": "when"
+                                                }
+                                            },
+                                            "arguments": [
+                                                {
+                                                    "type": "Literal",
+                                                    "value": "/url/2",
+                                                    "raw": "\"/url/2\""
+                                                },
+                                                {
+                                                    "type": "ObjectExpression",
+                                                    "properties": [
+                                                        {
+                                                            "type": "Property",
+                                                            "key": {
+                                                                "type": "Identifier",
+                                                                "name": "template"
+                                                            },
+                                                            "value": {
+                                                                "type": "Literal",
+                                                                "value": "",
+                                                                "raw": "'/app/templates/views/view2.html'"
+                                                            },
+                                                            "kind": "init"
+                                                        },
+                                                        {
+                                                            "type": "Property",
+                                                            "key": {
+                                                                "type": "Identifier",
+                                                                "name": "styles"
+                                                            },
+                                                            "value": {
+                                                                "type": "Literal",
+                                                                "value": "",
+                                                                "raw": "'/app/styles/views/view2.css'"
+                                                            },
+                                                            "kind": "init"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "rest": null,
+                            "generator": false,
+                            "expression": false
+                        }
+                    ]
+                }
+            }
+        ]};
+
+        astra(ast,true)
+            .when({
+                "type": "FunctionExpression",
+                "params": [
+                    {
+                        "type": "Identifier",
+                        "name": "$routeProvider"
+                    }
+                ],
+                "**": {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "property": {
+                            "type": "Identifier",
+                            "name": "when"
+                        }
+                    },
+                    "**": [
+                        {
+                            "type": "Property",
+                            "key": {
+                                "type": "Identifier",
+                                "name": "template"
+                            },
+                            "value": {
+                                "type": "Literal"
+                            }
+                        },
+                        {
+                            "type": "Property",
+                            "key": {
+                                "type": "Identifier",
+                                "name": "styles"
+                            },
+                            "value": {
+                                "type": "Literal"
+                            }
+                        }
+                    ]
+                }
+            }, function (chunk,next) {
+                chunk.value.value='';
+                setTimeout(next, 1000);
+            })
+            .run(function (err, newAst) {
+                JSON.stringify(newAst).should.be.equal(JSON.stringify(result));
+                done();
+            });
+
+    });
 });
 
