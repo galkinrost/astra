@@ -567,4 +567,30 @@ describe('Deep compare', function () {
         deepCompare(pattern, object).should.be.equal(true);
 
     });
+
+    it.only('Should return equal for deep pattern', function () {
+        var pattern = {
+            type: "ExpressionStatement",
+            "*": {
+                property: {
+                    "type": "Identifier",
+                    "name": "module"
+                }
+            }
+        };
+        var obj = {"type": "ExpressionStatement", "expression": {"type": "CallExpression", "callee": {"type": "MemberExpression", "computed": false, "object": {"type": "CallExpression", "callee": {"type": "MemberExpression", "computed": false, "object": {"type": "CallExpression", "callee": {"type": "MemberExpression", "computed": false, "object": {"type": "Identifier", "name": "angular"}, "property": {"type": "Identifier", "name": "module"}}, "arguments": [
+            {"type": "Literal", "value": "Module1", "raw": "'Module1'"},
+            {"type": "ArrayExpression", "elements": []}
+        ]}, "property": {"type": "Identifier", "name": "service"}}, "arguments": [
+            {"type": "Literal", "value": "one", "raw": "'one'"},
+            {"type": "ArrayExpression", "elements": [
+                {"type": "FunctionExpression", "id": null, "params": [], "defaults": [], "body": {"type": "BlockStatement", "body": []}, "rest": null, "generator": false, "expression": false}
+            ]}
+        ]}, "property": {"type": "Identifier", "name": "service"}}, "arguments": [
+            {"type": "Literal", "value": "two", "raw": "'two'"},
+            {"type": "FunctionExpression", "id": null, "params": [], "defaults": [], "body": {"type": "BlockStatement", "body": []}, "rest": null, "generator": false, "expression": false}
+        ]}};
+
+        deepCompare(pattern, obj).should.be.equal(true);
+    });
 });
