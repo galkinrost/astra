@@ -568,7 +568,7 @@ describe('Deep compare', function () {
 
     });
 
-    it.only('Should return equal for deep pattern', function () {
+    it('Should return equal for deep pattern', function () {
         var pattern = {
             type: "ExpressionStatement",
             "*": {
